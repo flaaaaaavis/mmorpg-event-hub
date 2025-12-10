@@ -1,13 +1,9 @@
+from typing import Any
 from rest_framework import serializers
 from apps.users.models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
-    """
-    Serializer para o model User.
-    Permite criar, atualizar, listar e detalhar users.
-    """
-
+class UserSerializer(serializers.ModelSerializer[Any]):
     class Meta:
         model = User
         fields = "__all__"

@@ -12,12 +12,12 @@ from django.contrib.auth import get_user_model
 class PlayerModelTests(TestCase):
     """Tests for the Player model."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         """Set up test fixtures."""
         self.user = User.objects.create(username="playeruser")
         self.guild = Guild.objects.create(name="Player Guild", score="200")
 
-    def test_player_creation(self):
+    def test_player_creation(self) -> None:
         """Test creating a player."""
         player = Player.objects.create(user=self.user, guild=self.guild)
         self.assertIsNotNone(player.id)
@@ -26,23 +26,23 @@ class PlayerModelTests(TestCase):
         self.assertEqual(player.awards, [])
         self.assertIsNotNone(player.created_at)
 
-    def test_player_id_is_uuid(self):
+    def test_player_id_is_uuid(self) -> None:
         """Test that player ID is a UUID."""
         player = Player.objects.create(user=self.user)
         self.assertIsInstance(player.id, uuid.UUID)
 
-    def test_player_guild_nullable(self):
+    def test_player_guild_nullable(self) -> None:
         """Test creating a player without a guild."""
         player = Player.objects.create(user=self.user, guild=None)
         self.assertIsNone(player.guild)
 
-    def test_player_str_representation(self):
+    def test_player_str_representation(self) -> None:
         """Test the string representation of a player."""
         player = Player.objects.create(user=self.user)
         expected = f"Player {player.id}"
         self.assertEqual(str(player), expected)
 
-    def test_player_awards_default(self):
+    def test_player_awards_default(self) -> None:
         """Test that awards default to an empty list."""
         player = Player.objects.create(user=self.user)
         self.assertEqual(player.awards, [])
@@ -52,7 +52,7 @@ class PlayerModelTests(TestCase):
 class PlayerAPITests(APITestCase):
     """Tests for the Player API endpoints."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         """Set up test fixtures."""
         self.user1 = User.objects.create(username="user1")
         self.user2 = User.objects.create(username="user2")
@@ -72,21 +72,21 @@ class PlayerAPITests(APITestCase):
         self.auth_user = AuthUser.objects.create_user(username="apitestauth")
         self.client.force_authenticate(user=self.auth_user)
 
-    def test_list_players(self):
+    def test_list_players(self) -> None:
         """Test GET /players/ returns all players."""
         url = reverse('player-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
 
-    def test_retrieve_player(self):
+    def test_retrieve_player(self) -> None:
         """Test GET /players/{id}/ returns correct player."""
         url = reverse('player-detail', args=[self.player1.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['awards'], ["award1"])
 
-    def test_create_player(self):
+    def test_create_player(self) -> None:
         """Test POST /players/ creates a player."""
         url = reverse('player-list')
         payload = {
@@ -98,7 +98,7 @@ class PlayerAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Player.objects.count(), 3)
 
-    def test_update_player(self):
+    def test_update_player(self) -> None:
         """Test PUT /players/{id}/ updates a player."""
         url = reverse('player-detail', args=[self.player1.id])
         payload = {
@@ -111,7 +111,7 @@ class PlayerAPITests(APITestCase):
         self.player1.refresh_from_db()
         self.assertEqual(self.player1.awards, ["updated"])
 
-    def test_partial_update_player(self):
+    def test_partial_update_player(self) -> None:
         """Test PATCH /players/{id}/ partially updates a player."""
         url = reverse('player-detail', args=[self.player2.id])
         payload = {"awards": ["new_achievement"]}
@@ -120,7 +120,7 @@ class PlayerAPITests(APITestCase):
         self.player2.refresh_from_db()
         self.assertEqual(self.player2.awards, ["new_achievement"])
 
-    def test_delete_player(self):
+    def test_delete_player(self) -> None:
         """Test DELETE /players/{id}/ deletes a player."""
         url = reverse('player-detail', args=[self.player1.id])
         response = self.client.delete(url)

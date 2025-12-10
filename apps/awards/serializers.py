@@ -1,8 +1,9 @@
+from typing import Any
 from rest_framework import serializers
 from apps.awards.models import Award
 
 
-class AwardSerializer(serializers.ModelSerializer):
+class AwardSerializer(serializers.ModelSerializer[Any]):
     class Meta:
         model = Award
         fields = "__all__"

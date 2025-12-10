@@ -1,21 +1,18 @@
+from typing import Any
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
-from django.db.models import Count
+from django.db.models import Count, QuerySet
 
 from apps.awards.models import Award
 from apps.awards.serializers import AwardSerializer
 
 
-class AwardViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet para gerenciar méritos de jogadores.
-    """
+class AwardViewSet(viewsets.ModelViewSet[Any]):
     queryset = Award.objects.all()
     serializer_class = AwardSerializer
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet[Award]:
         queryset = Award.objects.all()
         
         # Filtro por jogador
@@ -31,10 +28,24 @@ class AwardViewSet(viewsets.ModelViewSet):
         return queryset
 
     @action(detail=False, methods=['get'])
-    def leaderboard(self, request):
-        """Retorna ranking de jogadores por quantidade de méritos."""
-        top_players = Award.objects.values('player__user__username', 'player__id').annotate(
-            awards_count=Count('id')
-        ).order_by('-awards_count')[:20]
+    def leaderboard(self, request: Any) -> Response:
+        player_awards: dict[str, dict[str, Any]] = {}
+        for award in Award.objects.all():
+            if award.player:
+                key = award.player.user.username
+                if key not in player_awards:
+                    player_awards[key] = {
+                        'player__user__username': key,
+                        'player__id': str(award.player.id),
+                        'awards_count': 0
+                    }
+                player_awards[key]['awards_count'] += 1
         
-        return Response(list(top_players))
+        # Sort and return top 20
+        sorted_players = sorted(
+            player_awards.values(),
+            key=lambda x: x['awards_count'],
+            reverse=True
+        )[:20]
+        
+        return Response(sorted_players)

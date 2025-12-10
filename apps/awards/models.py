@@ -1,21 +1,10 @@
 import uuid
 from django.db import models
 from apps.players.models import Player
-from apps.guilds.models import Guild
 from apps.events.models import Event
 
 
-class Award(models.Model):
-    """
-    Sistema de méritos para jogadores baseado em eventos.
-    
-    Tipos de méritos:
-    - GuildHarmony: Masmorra concluída com todos os party_members da mesma guilda
-    - SoloClear: Masmorra concluída por apenas um jogador
-    - RevengeAward: Jogador mata alguém que já o matou antes
-    - RivalSlayerAward: Jogador mata o mesmo jogador 2+ vezes
-    """
-    
+class Award(models.Model):    
     AWARD_TYPES = (
         ('GUILD_HARMONY', 'Guild Harmony'),
         ('SOLO_CLEAR', 'Solo Clear'),
@@ -52,5 +41,6 @@ class Award(models.Model):
         ordering = ['-earned_at']
         unique_together = ('player', 'award_type', 'event')
     
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Award {self.award_type} for {self.player}"
+

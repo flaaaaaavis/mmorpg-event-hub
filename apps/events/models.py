@@ -62,5 +62,5 @@ class Event(models.Model):
             models.Index(fields=["guild", "-created_at"]),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Event {self.id} ({self.type})"

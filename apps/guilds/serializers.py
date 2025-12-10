@@ -1,13 +1,9 @@
+from typing import Any
 from rest_framework import serializers
 from apps.guilds.models import Guild
 
 
-class GuildSerializer(serializers.ModelSerializer):
-    """
-    Serializer para o model Guild.
-    Permite criar, atualizar, listar e detalhar guilds.
-    """
-
+class GuildSerializer(serializers.ModelSerializer[Any]):
     class Meta:
         model = Guild
         fields = "__all__"

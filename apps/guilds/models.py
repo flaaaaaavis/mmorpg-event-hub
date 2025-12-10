@@ -14,5 +14,5 @@ class Guild(models.Model):
     awards = models.JSONField(default=list)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.name)

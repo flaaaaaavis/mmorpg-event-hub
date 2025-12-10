@@ -1,13 +1,9 @@
+from typing import Any
 from rest_framework import serializers
 from apps.players.models import Player
 
 
-class PlayerSerializer(serializers.ModelSerializer):
-    """
-    Serializer para o model Player.
-    Permite criar, atualizar, listar e detalhar players.
-    """
-
+class PlayerSerializer(serializers.ModelSerializer[Any]):
     class Meta:
         model = Player
         fields = "__all__"
