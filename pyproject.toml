@@ -1,0 +1,31 @@
+[tool.pylint.master]
+load-plugins = [
+    "pylint_django"
+]
+
+[tool.pylint]
+django-settings-module = "config.settings"
+ignore = ["migrations", "settings"]
+disable = [
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring"
+]
+
+[tool.mypy]
+plugins = [
+    "mypy_django_plugin.main",
+    "mypy_drf_plugin.main"
+]
+python_version = "3.12"
+ignore_missing_imports = true
+strict = true
+disallow_untyped_defs = true
+disallow_untyped_calls = false
+warn_unused_ignores = true
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+
+[tool.django-stubs]
+django_settings_module = "config.settings"

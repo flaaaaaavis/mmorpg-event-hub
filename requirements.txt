@@ -1,0 +1,11 @@
+colorama==0.4.6
+iniconfig==2.3.0
+packaging==25.0
+pluggy==1.6.0
+Pygments==2.19.2
+pytest==9.0.2
+pytest-django==4.11.1
+Django==6.0
+djangorestframework==3.16.1
+django-stubs==4.2.7
+djangorestframework-stubs==1.10.0
