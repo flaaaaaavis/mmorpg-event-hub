@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/', include('apps.guilds.urls')),
     path('api/', include('apps.players.urls')),
     path('api/', include('apps.users.urls')),
+    path('api/', include('apps.awards.urls')),
     # DRF login (session) and token auth endpoints
     path('api-auth/', include('rest_framework.urls')),
     path('api/token-auth/', obtain_auth_token),

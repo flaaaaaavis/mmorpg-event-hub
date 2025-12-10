@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.guilds.apps.GuildsConfig',
     'apps.players.apps.PlayersConfig',
     'apps.users.apps.UsersConfig',
+    'apps.awards.apps.AwardsConfig',
 ]
 
 # Django REST Framework + Token Auth
